@@ -38,7 +38,7 @@ const Register = () => {
     setLocalError('')
 
     if (formData.password !== formData.confirmPassword) {
-      setLocalError('Passwords do not match')
+      setLocalError('As senhas não coincidem')
       return
     }
 
@@ -58,11 +58,11 @@ const Register = () => {
       dispatch(setUser(userCredential.user))
       navigate('/')
     } catch (error) {
-      let errorMessage = 'An error occurred during registration'
+      let errorMessage = 'Ocorreu um erro durante o registro'
       if (error.code === 'auth/email-already-in-use') {
-        errorMessage = 'This email is already registered'
+        errorMessage = 'Este e-mail já está registrado'
       } else if (error.code === 'auth/weak-password') {
-        errorMessage = 'Password should be at least 6 characters'
+        errorMessage = 'A senha deve ter pelo menos 6 caracteres'
       }
       setLocalError(errorMessage)
       dispatch(setError(error.message))
@@ -92,7 +92,7 @@ const Register = () => {
           }}
         >
           <Typography component="h1" variant="h5">
-            Create an Account
+            Criar uma Conta
           </Typography>
           {localError && (
             <Alert severity="error" sx={{ mt: 2, width: '100%' }}>
@@ -105,7 +105,7 @@ const Register = () => {
               required
               fullWidth
               id="name"
-              label="Full Name"
+              label="Nome Completo"
               name="name"
               autoComplete="name"
               autoFocus
@@ -117,7 +117,7 @@ const Register = () => {
               required
               fullWidth
               id="email"
-              label="Email Address"
+              label="Endereço de E-mail"
               name="email"
               autoComplete="email"
               value={formData.email}
@@ -128,7 +128,7 @@ const Register = () => {
               required
               fullWidth
               name="password"
-              label="Password"
+              label="Senha"
               type="password"
               id="password"
               autoComplete="new-password"
@@ -140,7 +140,7 @@ const Register = () => {
               required
               fullWidth
               name="confirmPassword"
-              label="Confirm Password"
+              label="Confirmar Senha"
               type="password"
               id="confirmPassword"
               value={formData.confirmPassword}
@@ -157,7 +157,7 @@ const Register = () => {
             <Box sx={{ textAlign: 'center' }}>
               <Link to="/login" style={{ textDecoration: 'none' }}>
                 <Typography variant="body2" color="primary">
-                  Already have an account? Sign In
+                  Já tem uma conta? Entre aqui
                 </Typography>
               </Link>
             </Box>

@@ -9,6 +9,8 @@ const Register = React.lazy(() => import('../pages/Register'))
 const Dashboard = React.lazy(() => import('../pages/Dashboard'))
 const Layout = React.lazy(() => import('../components/Layout'))
 const Home = React.lazy(() => import('../pages/Home'))
+const CadastrarKitnet = React.lazy(() => import('../pages/CadastrarKitnet'))
+const Profile = React.lazy(() => import('../pages/Profile'))
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useSelector((state) => state.auth)
@@ -33,20 +35,31 @@ const AppRoutes = () => {
         </Box>
       }
     >
-      <Routes>
+      <Routes future={{ v7_startTransition: true, v7_relativeSplatPath: true }}>
         <Route path="/" element={<Home />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route
-          path="/dashboard/*"
+          path="/cadastrar-kitnet"
           element={
             <PrivateRoute>
               <Layout>
-                <Dashboard />
+                <CadastrarKitnet />
               </Layout>
             </PrivateRoute>
           }
         />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Layout />
+            </PrivateRoute>
+          }
+        >
+          <Route index element={<Dashboard />} />
+          <Route path="profile" element={<Profile />} />
+        </Route>
       </Routes>
     </React.Suspense>
   )

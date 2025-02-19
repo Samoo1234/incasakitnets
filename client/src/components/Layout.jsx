@@ -68,8 +68,9 @@ const Layout = () => {
   }
 
   const menuItems = [
-    { text: 'Dashboard', icon: <DashboardIcon />, path: '/' },
-    { text: 'Profile', icon: <PersonIcon />, path: '/profile' }
+    { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
+    { text: 'Cadastrar Kitnet', icon: <PersonIcon />, path: '/cadastrar-kitnet' },
+    { text: 'Profile', icon: <PersonIcon />, path: '/dashboard/profile' }
   ]
 
   return (
