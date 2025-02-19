@@ -21,8 +21,8 @@ import DeleteIcon from '@mui/icons-material/Delete';
 
 const KitnetList = () => {
   const [kitnets, setKitnets] = useState([
-    { id: 1, numero: '101', status: 'Disponível', diaria: 100.00 },
-    { id: 2, numero: '102', status: 'Ocupado', diaria: 120.00 },
+    { id: 1, numero: '101', status: 'Disponível', diaria: 100.00, periodo: 'diario' },
+    { id: 2, numero: '102', status: 'Ocupado', diaria: 120.00, periodo: 'mensal' },
   ]);
 
   const [open, setOpen] = useState(false);
@@ -30,16 +30,49 @@ const KitnetList = () => {
   const [formData, setFormData] = useState({
     numero: '',
     status: '',
-    diaria: ''
+    valorMensal: '',
+    valorDiario: '',
+    valorAnual: ''
   });
+  
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    if (name === 'valorMensal') {
+      const valorMensal = parseFloat(value) || 0;
+      const valorDiario = (valorMensal / 30).toFixed(2);
+      const valorAnual = (valorMensal * 12).toFixed(2);
+      setFormData({
+        ...formData,
+        valorMensal: value,
+        valorDiario,
+        valorAnual
+      });
+    } else {
+      setFormData({
+        ...formData,
+        [name]: value
+      });
+    }
+  };
 
   const handleOpen = (kitnet = null) => {
+    setCurrentKitnet(kitnet);
     if (kitnet) {
-      setFormData(kitnet);
-      setCurrentKitnet(kitnet);
+      setFormData({
+        numero: kitnet.numero,
+        status: kitnet.status,
+        valorMensal: kitnet.diaria * 30,
+        valorDiario: kitnet.diaria,
+        valorAnual: kitnet.diaria * 365
+      });
     } else {
-      setFormData({ numero: '', status: 'Disponível', diaria: '' });
-      setCurrentKitnet(null);
+      setFormData({
+        numero: '',
+        status: '',
+        valorMensal: '',
+        valorDiario: '',
+        valorAnual: ''
+      });
     }
     setOpen(true);
   };
@@ -47,13 +80,12 @@ const KitnetList = () => {
   const handleClose = () => {
     setOpen(false);
     setCurrentKitnet(null);
-    setFormData({ numero: '', status: '', diaria: '' });
-  };
-
-  const handleChange = (e) => {
     setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
+      numero: '',
+      status: '',
+      valorMensal: '',
+      valorDiario: '',
+      valorAnual: ''
     });
   };
 
@@ -85,7 +117,8 @@ const KitnetList = () => {
             <TableRow>
               <TableCell>Número</TableCell>
               <TableCell>Status</TableCell>
-              <TableCell>Diária (R$)</TableCell>
+              <TableCell>Valor (R$)</TableCell>
+              <TableCell>Período</TableCell>
               <TableCell>Ações</TableCell>
             </TableRow>
           </TableHead>
@@ -95,6 +128,7 @@ const KitnetList = () => {
                 <TableCell>{kitnet.numero}</TableCell>
                 <TableCell>{kitnet.status}</TableCell>
                 <TableCell>{kitnet.diaria.toFixed(2)}</TableCell>
+                <TableCell>{kitnet.periodo === 'diario' ? 'Diário' : kitnet.periodo === 'mensal' ? 'Mensal' : 'Anual'}</TableCell>
                 <TableCell>
                   <IconButton onClick={() => handleOpen(kitnet)}>
                     <EditIcon />
@@ -113,31 +147,47 @@ const KitnetList = () => {
         <DialogTitle>{currentKitnet ? 'Editar Kitnet' : 'Nova Kitnet'}</DialogTitle>
         <DialogContent>
           <TextField
-            margin="dense"
-            name="numero"
-            label="Número"
-            type="text"
             fullWidth
+            margin="dense"
+            label="Número da Kitnet"
+            name="numero"
             value={formData.numero}
             onChange={handleChange}
           />
           <TextField
-            margin="dense"
-            name="status"
-            label="Status"
-            type="text"
             fullWidth
+            margin="dense"
+            label="Status"
+            name="status"
             value={formData.status}
             onChange={handleChange}
           />
           <TextField
-            margin="dense"
-            name="diaria"
-            label="Diária"
-            type="number"
             fullWidth
-            value={formData.diaria}
+            margin="dense"
+            label="Valor Mensal (R$)"
+            name="valorMensal"
+            type="number"
+            value={formData.valorMensal}
             onChange={handleChange}
+          />
+          <TextField
+            fullWidth
+            margin="dense"
+            label="Valor Diário (R$)"
+            name="valorDiario"
+            type="number"
+            value={formData.valorDiario}
+            disabled
+          />
+          <TextField
+            fullWidth
+            margin="dense"
+            label="Valor Anual (R$)"
+            name="valorAnual"
+            type="number"
+            value={formData.valorAnual}
+            disabled
           />
         </DialogContent>
         <DialogActions>
