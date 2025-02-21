@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   Box,
   Container,
@@ -15,8 +15,15 @@ import {
   Toolbar,
   IconButton
 } from '@mui/material';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/pt-br';
 import { useNavigate } from 'react-router-dom';
 import { AccountCircle } from '@mui/icons-material';
+import { db } from '../firebase';
+import { collection, query, where, getDocs } from 'firebase/firestore';
+import dayjs from 'dayjs';
 
 // Dados de exemplo das kitnets (posteriormente serão carregados do backend)
 const kitnets = [
@@ -48,9 +55,72 @@ const kitnets = [
 
 const Home = () => {
   const navigate = useNavigate();
+  const [dataInicial, setDataInicial] = useState(null);
+  const [dataFinal, setDataFinal] = useState(null);
+  const [disponibilidade, setDisponibilidade] = useState({});
+
+  const verificarDisponibilidade = async (kitnetId, dataInicio, dataFim) => {
+    if (!dataInicio || !dataFim) return true;
+
+    try {
+      const reservasRef = collection(db, 'reservas');
+      const dataInicioTimestamp = dayjs(dataInicio).startOf('day');
+      const dataFimTimestamp = dayjs(dataFim).endOf('day');
+
+      const q = query(
+        reservasRef,
+        where('kitnetId', '==', kitnetId),
+        where('dataInicial', '<=', dataFimTimestamp.toDate()),
+        where('dataFinal', '>=', dataInicioTimestamp.toDate())
+      );
+
+      const querySnapshot = await getDocs(q);
+      return querySnapshot.empty;
+    } catch (error) {
+      console.error('Erro ao verificar disponibilidade:', error);
+      return false;
+    }
+  };
+
+  useEffect(() => {
+    const verificarTodasKitnets = async () => {
+      if (!dataInicial || !dataFinal) {
+        const novaDisponibilidade = {};
+        kitnets.forEach(kitnet => {
+          novaDisponibilidade[kitnet.id] = kitnet.disponivel;
+        });
+        setDisponibilidade(novaDisponibilidade);
+        return;
+      }
+
+      const novaDisponibilidade = {};
+      
+      for (const kitnet of kitnets) {
+        if (kitnet.disponivel) {
+          novaDisponibilidade[kitnet.id] = await verificarDisponibilidade(
+            kitnet.id,
+            dataInicial,
+            dataFinal
+          );
+        } else {
+          novaDisponibilidade[kitnet.id] = false;
+        }
+      }
+      
+      setDisponibilidade(novaDisponibilidade);
+    };
+
+    verificarTodasKitnets();
+  }, [dataInicial, dataFinal]);
 
   const handleAlugar = (id) => {
-    navigate('/register', { state: { kitnetId: id } });
+    navigate('/aluguel', { 
+      state: { 
+        kitnetId: id,
+        dataInicial,
+        dataFinal
+      } 
+    });
   };
 
   const handleLoginClick = () => {
@@ -101,20 +171,55 @@ const Home = () => {
                       R$ {kitnet.preco}
                     </Typography>
                     <Chip
-                      label={kitnet.disponivel ? 'Disponível' : 'Alugado'}
-                      color={kitnet.disponivel ? 'success' : 'error'}
+                      label={kitnet.disponivel && (!dataInicial || !dataFinal || disponibilidade[kitnet.id]) ? 'Disponível' : 'Indisponível'}
+                      color={kitnet.disponivel && (!dataInicial || !dataFinal || disponibilidade[kitnet.id]) ? 'success' : 'error'}
                       size="small"
                     />
                   </Stack>
+                  
+                  <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="pt-br">
+                    <Stack spacing={2} sx={{ mt: 2 }}>
+                      <DatePicker
+                        label="Data de Entrada"
+                        value={dataInicial}
+                        onChange={(newValue) => setDataInicial(newValue)}
+                        format="DD/MM/YYYY"
+                        slotProps={{
+                          textField: {
+                            size: "small",
+                            fullWidth: true,
+                            placeholder: "DD/MM/AAAA"
+                          }
+                        }}
+                        disablePast
+                      />
+                      <DatePicker
+                        label="Data de Saída"
+                        value={dataFinal}
+                        onChange={(newValue) => setDataFinal(newValue)}
+                        format="DD/MM/YYYY"
+                        slotProps={{
+                          textField: {
+                            size: "small",
+                            fullWidth: true,
+                            placeholder: "DD/MM/AAAA"
+                          }
+                        }}
+                        minDate={dataInicial}
+                        disabled={!dataInicial}
+                      />
+                    </Stack>
+                  </LocalizationProvider>
                 </CardContent>
                 <CardActions>
                   <Button
                     size="small"
                     color="primary"
                     onClick={() => handleAlugar(kitnet.id)}
-                    disabled={!kitnet.disponivel}
+                    disabled={!kitnet.disponivel || !dataInicial || !dataFinal || !disponibilidade[kitnet.id]}
+                    fullWidth
                   >
-                    {kitnet.disponivel ? 'Alugar' : 'Indisponível'}
+                    {kitnet.disponivel && (!dataInicial || !dataFinal || disponibilidade[kitnet.id]) ? 'Alugar' : 'Indisponível'}
                   </Button>
                 </CardActions>
               </Card>

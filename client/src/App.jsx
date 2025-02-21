@@ -11,6 +11,7 @@ const Layout = React.lazy(() => import('./components/Layout'))
 const Home = React.lazy(() => import('./pages/Home'))
 const CadastrarKitnet = React.lazy(() => import('./pages/CadastrarKitnet'))
 const Profile = React.lazy(() => import('./pages/Profile'))
+const AluguelForm = React.lazy(() => import('./pages/AluguelForm'))
 
 
 const PrivateRoute = ({ children }) => {
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
+        <Route path="/aluguel" element={<AluguelForm />} />
         <Route
           path="/"
           element={
