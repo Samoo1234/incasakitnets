@@ -18,55 +18,60 @@ Incasa é uma plataforma centralizada para gestão inteligente de kitnets, ofere
 - Memória RAM: 8GB mínimo (16GB recomendado)
 - Armazenamento: SSD com 256GB ou mais
 
-## Características Principais
+## Status de Implementação
 
-### 1. Plataforma Centralizada
-- Integração com Tuya Smart para controle de dispositivos IoT
-- Sistema de gestão hoteleira integrado
-- Gerenciamento de reservas, check-in/check-out e pagamentos
+### Recursos Implementados ✅
 
-### 2. Aplicativo do Hóspede
-- Interface intuitiva e amigável
-- Check-in/check-out autônomo via QR Code ou biometria
-- Controle de ambiente (temperatura, iluminação, etc.)
-- Solicitação de serviços e manutenção
-- Sistema de pagamento integrado
+#### 1. Autenticação e Segurança
+- Sistema de autenticação com Firebase
+- Proteção de rotas com autenticação
+- Rate limiting implementado
+- Configurações de segurança básicas (Helmet, CORS)
 
-### 3. Sistema de Pagamento
-- Integração com gateways de pagamento (PayPal, Stripe)
-- Geração de boletos
-- Sistema completo de gestão financeira
-- Relatórios de receitas e despesas
+#### 2. Interface do Usuário
+- Layout responsivo com Material-UI
+- Carregamento lazy de componentes para melhor performance
+- Páginas básicas implementadas:
+  - Login
+  - Registro
+  - Dashboard
+  - Home
+  - Perfil
+  - Cadastro de Kitnet
+  - Formulário de Aluguel
 
-### 4. Controle de Acesso
-- Geração automática de senhas únicas
-- Envio automático por email
-- Controle de validade de acesso
-- Fechaduras inteligentes com biometria
+#### 3. Backend
+- Servidor Express.js configurado
+- Integração com Firebase (Auth, Firestore, Storage, Analytics)
+- API RESTful básica
+- Configuração de variáveis de ambiente
 
-### 5. Gestão de Clientes
-- Cadastro simplificado
-- Perfis personalizados
-- Histórico de reservas
-- Preferências de ambiente salvas
+### Recursos em Desenvolvimento 🚧
 
-### 6. Automação e IoT
+#### 1. Plataforma Centralizada
+- Integração com Tuya Smart (Planejado)
+- Sistema de gestão hoteleira
+- Gerenciamento de reservas
+
+#### 2. Sistema de Pagamento
+- Integração com gateways de pagamento
+- Sistema de gestão financeira
+- Relatórios financeiros
+
+#### 3. Controle de Acesso
+- Geração de senhas únicas
+- Sistema de envio de emails
+- Integração com fechaduras inteligentes
+
+#### 4. Automação e IoT
 - Controle de acesso biométrico
-- Rotinas automatizadas
-- Integração com assistentes virtuais (Google Assistant, Alexa)
+- Integração com assistentes virtuais
 - Sistema de monitoramento remoto
 
-### 7. Painel Administrativo
-- Gerenciamento de reservas
-- Controle de acesso
-- Gestão financeira
-- Agendamento de manutenção
-
-### 8. Segurança
-- Criptografia de dados
-- Autenticação de dois fatores
-- Sistema de backup regular
+#### 5. Recursos Avançados
+- Sistema de backup
 - Monitoramento em tempo real
+- Autenticação de dois fatores
 
 ## Arquitetura do Sistema
 

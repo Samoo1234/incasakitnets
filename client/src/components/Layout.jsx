@@ -20,7 +20,8 @@ import {
   ChevronLeft as ChevronLeftIcon,
   Dashboard as DashboardIcon,
   Person as PersonIcon,
-  ExitToApp as LogoutIcon
+  ExitToApp as LogoutIcon,
+  Home as HomeIcon
 } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
 import { auth } from '../firebase'
@@ -69,7 +70,7 @@ const Layout = () => {
 
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
-    { text: 'Cadastrar Kitnet', icon: <PersonIcon />, path: '/cadastrar-kitnet' },
+    { text: 'Cadastrar Kitnet', icon: <HomeIcon />, path: '/cadastrar-kitnet' },
     { text: 'Profile', icon: <PersonIcon />, path: '/dashboard/profile' }
   ]
 
