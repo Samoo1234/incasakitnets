@@ -21,7 +21,10 @@ import {
   Dashboard as DashboardIcon,
   Person as PersonIcon,
   ExitToApp as LogoutIcon,
-  Home as HomeIcon
+  Home as HomeIcon,
+  Settings as SettingsIcon,
+  Storage as StorageIcon,
+  BookOnline as BookOnlineIcon
 } from '@mui/icons-material'
 import { styled } from '@mui/material/styles'
 import { auth } from '../firebase'
@@ -71,6 +74,9 @@ const Layout = () => {
   const menuItems = [
     { text: 'Dashboard', icon: <DashboardIcon />, path: '/dashboard' },
     { text: 'Cadastrar Kitnet', icon: <HomeIcon />, path: '/cadastrar-kitnet' },
+    { text: 'Gerenciar Kitnets', icon: <SettingsIcon />, path: '/gerenciar-kitnets' },
+    { text: 'Gerenciar Reservas', icon: <BookOnlineIcon />, path: '/gerenciar-reservas' },
+    { text: 'Armazenamento Local', icon: <StorageIcon />, path: '/gerenciar-armazenamento' },
     { text: 'Profile', icon: <PersonIcon />, path: '/dashboard/profile' }
   ]
 

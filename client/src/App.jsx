@@ -10,8 +10,11 @@ const Dashboard = React.lazy(() => import('./pages/Dashboard'))
 const Layout = React.lazy(() => import('./components/Layout'))
 const Home = React.lazy(() => import('./pages/Home'))
 const CadastrarKitnet = React.lazy(() => import('./pages/CadastrarKitnet'))
+const GerenciarKitnets = React.lazy(() => import('./pages/GerenciarKitnets'))
+const GerenciarReservas = React.lazy(() => import('./pages/GerenciarReservas'))
+const GerenciarArmazenamento = React.lazy(() => import('./pages/GerenciarArmazenamento'))
 const Profile = React.lazy(() => import('./pages/Profile'))
-const AluguelForm = React.lazy(() => import('./pages/AluguelForm'))
+const Aluguel = React.lazy(() => import('./pages/Aluguel'))
 
 
 const PrivateRoute = ({ children }) => {
@@ -41,7 +44,7 @@ const App = () => {
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/" element={<Home />} />
-        <Route path="/aluguel" element={<AluguelForm />} />
+        <Route path="/aluguel" element={<Aluguel />} />
         <Route
           path="/"
           element={
@@ -52,6 +55,9 @@ const App = () => {
         >
           <Route path="dashboard" element={<Dashboard />} />
           <Route path="cadastrar-kitnet" element={<CadastrarKitnet />} />
+          <Route path="gerenciar-kitnets" element={<GerenciarKitnets />} />
+          <Route path="gerenciar-reservas" element={<GerenciarReservas />} />
+          <Route path="gerenciar-armazenamento" element={<GerenciarArmazenamento />} />
           <Route path="dashboard/profile" element={<Profile />} />
         </Route>
       </Routes>

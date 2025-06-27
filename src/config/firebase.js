@@ -11,7 +11,7 @@ const serviceAccount = {
 if (!admin.apps.length) {
   admin.initializeApp({
     credential: admin.credential.cert(serviceAccount),
-    storageBucket: "incasa-319b6.firebasestorage.app"
+    storageBucket: process.env.FIREBASE_STORAGE_BUCKET
   });
 }
 
